@@ -1,0 +1,31 @@
+{
+    "comment": "these will be used on each boot first ,or used very frequently",
+    "config_file": "config0.json",
+
+    "s_index": "/index.html",
+    "s_style": "/style.css",
+    "s_script": "/script.js",
+    "s_config": "/config.json",
+    "s_dev": "/dev.html",
+
+    "firstboot": "true",
+
+    "AWS_endpoint": "a3an4l5rg1sm5p-ats.iot.ap-south-1.amazonaws.com",
+    "AWS_endpoint_new": "a3an4l5rg1sm5p-ats.iot.ap-south-1.amazonaws.com",
+    "clientPubSub_buff_size": "512",
+    "failed_aws_trials_counter_base": "5",
+
+    "groupId": "0601202101",
+    "localIP": "",
+
+    "myrgbHSL": "254255123",
+    "toSendHSL": "123255123",
+    "x_min_on_value": "20",
+
+    "cert_ca": "/ca.der",
+    "cert_cert": "/cert.der",
+    "cert_private": "/private.der"
+
+
+
+}
