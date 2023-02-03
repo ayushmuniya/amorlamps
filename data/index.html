@@ -1,0 +1,406 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- <link rel="stylesheet" type="text/css" href="style.css">
+
+	<script src="script.js"></script> -->
+
+    <title>AMOR LAMPS</title>
+    <style>
+        .c {
+            text-align: center;
+        }
+        
+        div,
+        input {
+            padding: 5px;
+            font-size: 1em;
+        }
+        
+        input {
+            width: 25%;
+            min-width: 450px;
+            max-width: 450px;
+            border-radius: 5px;
+        }
+        
+        body {
+            text-align: center;
+            font-family: verdana;
+        }
+        
+        #favcolor {
+            line-height: 15.0rem;
+            height: 15.0rem;
+            width: 25%;
+        }
+        
+        #colorcode {
+            font-size: 5.0rem;
+            color: #6f6161;
+            background-color: black;
+            border-radius: 10px;
+            margin: 1%;
+            padding: 1%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+        
+        button {
+            border: 0;
+            border-radius: 0.3rem;
+            background-color: #1fa3ec;
+            color: #fff;
+            line-height: 2.4rem;
+            font-size: 1.2rem;
+            min-width: 450px;
+            max-width: 450px;
+            /* height:10%; */
+        }
+        
+        .hrC {
+            height: 10px;
+            border-width: 0;
+            color: white;
+            background-color: white
+        }
+        
+        i {
+            vertical-align: sub;
+            margin-right: 3px;
+        }
+        
+        .q {
+            float: right;
+            width: 64px;
+            text-align: right;
+        }
+        
+        #todmfxm_b {
+            background-image: linear-gradient(-45deg, red, orange, yellow, green, blue, indigo, violet);
+            background-size: 400% 400%;
+            animation: gradient 1s ease infinite;
+            -webkit-animation: gradientBG 15s ease infinite;
+            animation: gradientBG 15s ease infinite;
+        }
+        
+        @-webkit-keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 2.4rem;
+            background: #000000;
+            outline: none;
+            opacity: 0.85;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+            background-image: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+        }
+        
+        #myColorRange {
+            background-image: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet, red);
+            /* //background-image: linear-gradient(90deg,hsv(0, 50%, 50%),hsv(180, 50%, 50%),hsv(360, 50%, 50%));
+   //background-image: linear-gradient(90deg,hsl(0, 50%, 50%),hsl(180, 50%, 50%),hsl(360, 50%, 50%));
+   //background-image: linear-gradient(90deg,hsv(0, 100%, 100%),hsv(180, 100%, 100%),hsv(360, 100%, 100%)); */
+        }
+        
+        #myColorRange2 {
+            background-image: linear-gradient(90deg, red, #FFFFFF);
+            background-image: linear-gradient(90deg, hsl(30, 100%, 50%), #FFFFFF);
+        }
+        
+        #myColorRange3 {
+            background-image: linear-gradient(90deg, red, #000000);
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 1.4rem;
+            height: 2.4rem;
+            background: #00000088;
+            cursor: pointer;
+            border-radius: 1.3rem;
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 1.4rem;
+            height: 2.4rem;
+            background: #00000088;
+            cursor: pointer;
+            border-radius: 1.3rem;
+        }
+    </style>
+    <script>
+        var gateway = 'ws://' + window.location.hostname + ':81/'; // TODO:uncomment in production
+        // var gateway = 'ws://' + '192.168.1.27' + ':81/';
+        // var gateway = 'ws://' + '192.168.29.24' + ':81/';
+        var Socket;
+        window.addEventListener('load', onLoad);
+
+        function initWebSocket() {
+            console.log('Trying to open a WebSocket connection...' + gateway);
+            Socket = new WebSocket(gateway);
+            Socket.onopen = onOpen;
+            Socket.onclose = onClose;
+            Socket.onmessage = onMessage; // <-- add this line
+
+            // document.getElementById("wsurl").innerHTML = gateway;
+
+        }
+
+        function onOpen(event) {
+            console.log('Connection opened');
+            Socket.send('Hello Server!');
+            // document.getElementById("wsstate").innerHTML = "onOpen";
+        }
+
+        function onClose(event) {
+            console.log('Connection closed');
+            setTimeout(initWebSocket, 20000);
+            // document.getElementById("wsstate").innerHTML = "onClose";
+        }
+
+        function onMessage(event) {
+            console.log(event.data);
+            // document.getElementById("wsstate").innerHTML = "onMessage=" + event.data;
+        }
+
+        function onLoad(event) {
+            console.log("page loaded");
+            // downloadCSS();
+            initWebSocket();
+            // initButton();
+        }
+
+        function init() {
+            // Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+            // Socket = new WebSocket('ws://192.168.1.27:81/ws');
+            // Socket = new WebSocket('ws://192.168.1.27/ws');
+            // document.getElementById("myColorRange").value = 128;
+
+            // Listen for messages
+            console.log("f init()");
+        }
+
+        function send_ws_msg(msg) {
+            // if (document.getElementById("wscb_i").checked == true) {
+            //     console.log('w' + msg);
+            //     Socket.send('w' + msg);
+            // } else {
+            //     console.log(msg);
+            //     Socket.send(msg);
+            // }
+            console.log(msg);
+            Socket.send(msg);
+
+        }
+
+
+
+        function ws_method_builder(method, a1 = null, a2 = null, b1 = null, b2 = null) {
+
+            var myObj = '{"method":"' + method + '","' + a1 + '":"' + a2 + '","' + b1 + '":"' + b2 + '"}';
+            send_ws_msg(myObj);
+        }
+
+        function todmfxm() {
+            ws_method_builder('turn_on_disco_mode_for_x_mins', 'x', '20');
+        }
+
+        function srtA() {
+            ws_method_builder('send_responseToAWS', 'responseMsg', document.getElementById('srtA_i').value);
+        }
+
+        function uxmov() {
+            ws_method_builder('update_x_min_on_value', 'x', document.getElementById('uxmov_i').value);
+        }
+
+        function ugid() {
+            let pw = prompt('Enter password', 'Password');
+            if (pw == 'amor123') {
+                console.log('ok ' + pw);
+                ws_method_builder('update_groupId', 'gID', document.getElementById('uxmov_i').value);
+            } else {
+                console.log('not ok ' + pw);
+                alert('Wrong Password !');
+            }
+
+        }
+
+        function rfcj() {
+            ws_method_builder('readFromConfigJSON', 'key', document.getElementById('rfcj_i').value);
+        }
+
+        function ufcj() {
+            ws_method_builder('updatetoConfigJSON', 'key', document.getElementById('ufcj_ki').value, 'value', document.getElementById('ufcj_vi').value);
+        }
+
+        function refcj() {
+            ws_method_builder('removeFromConfigJSON', 'key', document.getElementById('refcj_i').value);
+        }
+
+        function gespc() {
+            ws_method_builder('get_ESP_core', 'key', document.getElementById('gespc_i').value);
+        }
+
+        function fuffs() {
+            ws_method_builder('firmware_update_from_fs', 'ota_filename', document.getElementById('fuffs_i').value);
+        }
+
+        function sgmtgt() {
+            ws_method_builder('send_given_msg_to_given_topic', 'topic', document.getElementById('sgmtgt_ti').value, 'msg', document.getElementById('sgmtgt_mi').value);
+        }
+
+        function lfsfsws() {
+            console.log('wait');
+        }
+
+        function mthd_call(mc, args, plus1arg, s, v) {
+            var myObj = '{"method":"method_handler","mc":"' + mc + '", "args":"' + args + '", "plus1arg":"' + plus1arg + '", "s":"' + s + '", "v":"' + v + '"}';
+            send_ws_msg(myObj);
+
+        }
+
+        function mthd() {
+            mthd_call(
+                document.getElementById('mthd_mi').value,
+                document.getElementById('mthd_ai').value,
+                document.getElementById('mthd_pi').value,
+                document.getElementById('mthd_si').value,
+                document.getElementById('mthd_vi').value
+            );
+        }
+
+        function fswc() {
+            let ok = confirm("Confirm Reset Wifi Credentials?");
+
+            if (ok) {
+                ws_method_builder('forget_saved_wifi_creds');
+                alert("Wait for 2 mins then ,setep your device again");
+            } else {
+                alert("ok! Not reset wifi.");
+            }
+
+        }
+
+        function wsutsc(h, s, v) {
+            var myObj = '{"method":"ws_update_tosend_color","h":"' + h + '", "s":"' + s + '", "v":"' + v + '"}';
+
+            console.log(myObj);
+            send_ws_msg('w' + myObj);
+
+        }
+
+        function updateColor() {
+            var h = document.getElementById("myColorRange").value
+            var s = document.getElementById("myColorRange2").value
+            var v = document.getElementById("myColorRange3").value
+
+            console.log("" + h + s + v);
+            wsutsc(h, s, v);
+
+            h = ~~((h / 255) * 360);
+            s = ~~((s / 255) * 100);
+            v = ~~((v / 255) * 100);
+            console.log(">" + h + s + v);
+
+            document.getElementById("myColorRange2").style.background = "linear-gradient(90deg,hsl(" + h + "deg,0%,100%),hsl(" + h + "deg,100%,50%))";
+
+            document.getElementById("myColorRange3").style.background = "linear-gradient(90deg,hsl(" + h + "deg," + s + "%,40%),hsl(" + h + "deg," + s + "%,70%),hsl(" + h + "deg," + s + "%,100%))";
+
+            document.getElementById("colorcode").style.background = "hsl(" + h + "deg," + (s) + "%," + (100 - (s / 2)) + "%)";
+        }
+    </script>
+</head>
+
+<body onload="javascript:init()">
+    <div>
+        <!-- amor svg logo -->
+        <br>
+        <h3>Amor Lamps</h3>
+    </div>
+    <div>
+        <!-- deviceid update on page load -->
+        <h3>deviceId</h3>
+    </div>
+    <br />
+    <div>
+        <div>
+            <p>Color Mixer</p>
+            <input type="range" min="0" max="255" value="128" class="slider" id="myColorRange" onchange="updateColor()">
+        </div>
+        <div>
+            <input type="range" min="0" max="255" value="128" class="slider" id="myColorRange2" onchange="updateColor()">
+        </div>
+        <div>
+            <input type="range" min="103" max="255" value="76" class="slider" id="myColorRange3" onchange="updateColor()" style="display: none;">
+        </div>
+        <br>
+        <div style="height:70px;">
+            <i id="colorcode" class="material-icons">online_prediction</i>
+        </div>
+        <br>
+
+        <hr class="hrC"><br/>
+
+        <input id="uxmov_i" name="uxmov_i" type="text" placeholder="gID">
+        <br><br/>
+        <button id="uxmov_b" onclick="ugid()"><i class="material-icons" style="font-size:auto;color:white;">groups</i>Update Group Id</button>
+        <br>
+        <span>Do not update group Id if not asked by customer support</span>
+        <br/>
+        <span>WARNING:Lamps will stop working.</span>
+
+        <hr class="hrC"><br/>
+
+        <input id="uxmov_i" name="uxmov_i" type="number" placeholder="x" value="20" min="1" max="60">
+        <br><br/>
+        <button id="uxmov_b" onclick="uxmov()"><i class="material-icons"
+			style="font-size:auto;color:white;">hourglass_bottom</i>Update ON Duration</button>
+        <br>
+        <span>Set you lamp ON time (1-60 mins), default is 20 mins.</span>
+        <br /><br/>
+        <hr class="hrC"><br/>
+        <button id="fswc_b" onclick="fswc()"><i class="material-icons"
+			style="font-size:auto;color:white;">wifi_off</i>Reset Wifi Credentials</button>
+
+        <hr class="hrC"><br/>
+        <button id="todmfxm_b" onclick="todmfxm()">.<i class="material-icons"
+			style="font-size:auto;color:white;">palette</i>.</button>
+
+        <hr class="hrC"><br/>
+        <button id="todm_b" onclick="ws_method_builder('turn_off_rgb')" style="background-color: #d82c2c;"><span> <i class="material-icons"
+			style="font-size:auto;color:white;">power_settings_new</i>TURN OFF LAMP</span></button>
+
+    </div>
+</body>
+
+</html>

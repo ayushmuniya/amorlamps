@@ -1,0 +1,25 @@
+{
+    "comment": "ota and download related data",
+    "config_file": "config6.json",
+
+    "ota_host_url": "raw.githubusercontent.com",
+    "ota_host_port": "443",
+    "ota_host_ca": "ota.der",
+    "URL_fw_Version": "/programmer131/otaFiles/master/version.txt",
+    "URL_fw_Bin": "https://raw.githubusercontent.com/programmer131/otaFiles/master/firmware.bin",
+
+    "d2fs_host_url": "raw.githubusercontent.com",
+    "d2fs_host_port": "443",
+    "d2fs_host_ca": "ota.der",
+    "d2fs_url_file": "/programmer131/otaFiles/master/version.txt",
+    "d2fs_filename": "version.txt",
+    "d2fs_finished_flag": "0",
+
+    "cert_ca_ver": "",
+    "cert_ca_bin": "",
+    "cert_ca_fs": "",
+
+    "partner_ids": ["345", "678"],
+
+    "my_color": [255, 255, 255]
+}

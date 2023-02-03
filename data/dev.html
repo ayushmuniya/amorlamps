@@ -1,0 +1,259 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- <script src="script.js"></script> -->
+    <script>
+        var gateway = 'ws://' + window.location.hostname + ':81/'; // TODO:uncomment in production
+        // var gateway = 'ws://' + '192.168.1.27' + ':81/';
+        var Socket;
+        window.addEventListener('load', onLoad);
+
+        function initWebSocket() {
+            console.log('Trying to open a WebSocket connection...');
+            Socket = new WebSocket(gateway);
+            Socket.onopen = onOpen;
+            Socket.onclose = onClose;
+            Socket.onmessage = onMessage; // <-- add this line
+
+            document.getElementById("wsurl").innerHTML = gateway;
+
+
+        }
+
+        function onOpen(event) {
+            console.log('Connection opened');
+            Socket.send('Hello Server!');
+            document.getElementById("wsstate").innerHTML = "onOpen";
+        }
+
+        function onClose(event) {
+            console.log('Connection closed');
+            setTimeout(initWebSocket, 20000);
+            document.getElementById("wsstate").innerHTML = "onClose";
+        }
+
+        function onMessage(event) {
+            console.log(event.data);
+            document.getElementById("wsstate").innerHTML = "onMessage=" + event.data;
+        }
+
+        function downloadCSS(event) {
+            console.log("loading css");
+            // var fileref = document.createElement("link")
+            // fileref.setAttribute("rel", "stylesheet")
+            // fileref.setAttribute("type", "text/css")
+            // fileref.setAttribute("href", "style.css")
+
+            // Get HTML head element 
+            var head = document.getElementsByTagName('HEAD')[0];
+
+            // Create new link Element 
+            var link = document.createElement('link');
+
+            // set the attributes for link element  
+            link.rel = 'stylesheet';
+
+            link.type = 'text/css';
+
+            // link.href = 'style.css';
+            link.href = 'http://192.168.1.27/style.css';
+
+            // Append link element to HTML head 
+            head.appendChild(link);
+
+            console.log("loading css");
+        }
+
+        function onLoad(event) {
+            console.log("page loaded");
+            // downloadCSS();
+            initWebSocket();
+            // initButton();
+        }
+
+        function init() {
+            // Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+            // Socket = new WebSocket('ws://192.168.1.27:81/ws');
+            // Socket = new WebSocket('ws://192.168.1.27/ws');
+            // document.getElementById("myColorRange").value = 128;
+
+            // Listen for messages
+
+        }
+
+        function send_ws_msg(msg) {
+            if (document.getElementById("wscb_i").checked == true) {
+                console.log('w' + msg);
+                Socket.send('w' + msg);
+            } else {
+                console.log(msg);
+                Socket.send(msg);
+            }
+        }
+
+
+
+        function ws_method_builder(method, a1 = null, a2 = null, b1 = null, b2 = null) {
+
+            var myObj = '{"method":"' + method + '","' + a1 + '":"' + a2 + '","' + b1 + '":"' + b2 + '"}';
+            send_ws_msg(myObj);
+        }
+
+        function todmfxm() {
+            ws_method_builder('turn_on_disco_mode_for_x_mins', 'x', document.getElementById('todmfxm_i').value);
+        }
+
+        function srtA() {
+            ws_method_builder('send_responseToAWS', 'responseMsg', document.getElementById('srtA_i').value);
+        }
+
+        function uxmov() {
+            ws_method_builder('update_x_min_on_value', 'x', document.getElementById('uxmov_i').value);
+        }
+
+        function ugid() {
+            ws_method_builder('update_groupId', 'gID', document.getElementById('uxmov_i').value);
+        }
+
+        function rfcj() {
+            ws_method_builder('readFromConfigJSON', 'key', document.getElementById('rfcj_i').value);
+        }
+
+        function ufcj() {
+            ws_method_builder('updatetoConfigJSON', 'key', document.getElementById('ufcj_ki').value, 'value', document.getElementById('ufcj_vi').value);
+        }
+
+        function refcj() {
+            ws_method_builder('removeFromConfigJSON', 'key', document.getElementById('refcj_i').value);
+        }
+
+        function gespc() {
+            ws_method_builder('get_ESP_core', 'key', document.getElementById('gespc_i').value);
+        }
+
+        function fuffs() {
+            ws_method_builder('firmware_update_from_fs', 'ota_filename', document.getElementById('fuffs_i').value);
+        }
+
+        function sgmtgt() {
+            ws_method_builder('send_given_msg_to_given_topic', 'topic', document.getElementById('sgmtgt_ti').value, 'msg', document.getElementById('sgmtgt_mi').value);
+        }
+
+        function lfsfsws() {
+            console.log('wait');
+        }
+
+        function mthd_call(mc, args, plus1arg, s, v) {
+            var myObj = '{"method":"method_handler","mc":"' + mc + '", "args":"' + args + '", "plus1arg":"' + plus1arg + '", "s":"' + s + '", "v":"' + v + '"}';
+            send_ws_msg(myObj);
+
+        }
+
+        function mthd() {
+            mthd_call(
+                document.getElementById('mthd_mi').value,
+                document.getElementById('mthd_ai').value,
+                document.getElementById('mthd_pi').value,
+                document.getElementById('mthd_si').value,
+                document.getElementById('mthd_vi').value
+            );
+        }
+    </script>
+
+    <!-- <link rel="stylesheet" type="text/css" href="style.css" > -->
+    <style>
+        body {
+            text-align: center;
+            font-family: verdana;
+        }
+    </style>
+
+    <title>Amor Dev Page</title>
+
+</head>
+
+<!-- <body onload="javascript:init()"> -->
+
+<body onload="init()">
+    <br />
+
+    <div>
+        <h3 id="mainh3">deviceId</h3>
+    </div>
+
+    <div>
+        <span id="wsurl"></span>
+        <br>
+        <span id="wsstate"></span>
+        <br>
+        <label for="wscb_i">is WS response expected ?</label><br>
+        <input type="checkbox" id="wscb_i" name="wscb_i">
+        <br>
+        <input id="todmfxm_i" type="number" min="0" max="60" value="10" placeholder="x">
+        <button id="todmfxm_b" onclick="todmfxm()">turn_on_disco_mode_for_x_mins</button>
+        <button id="todm_b" onclick="ws_method_builder('turn_off_disco_mode')">turn_off_disco_mode</button>
+        <br>
+        <button id="todm_b" onclick="ws_method_builder('turn_off_rgb')">turn_off_rgb</button>
+        <br>
+        <input id="srtA_i" type="text" placeholder="responseMsg">
+        <button id="srtA_b" onclick="srtA()">send_responseToAWS</button>
+        <br>
+        <button id="sttg_b" onclick="ws_method_builder('send_touch_toGroup')">send_touch_toGroup</button>
+        <br>
+        <button id="fswc_b" onclick="ws_method_builder('forget_saved_wifi_creds')">forget_saved_wifi_creds</button>
+        <br>
+        <input id="uxmov_i" type="number" placeholder="x">
+        <button id="uxmov_b" onclick="uxmov()">update_x_min_on_value</button>
+        <br>
+        <input id="uxmov_i" type="text" placeholder="gID">
+        <button id="uxmov_b" onclick="ugid()">update_groupId</button>
+        <br>
+        <input id="rfcj_i" type="text" placeholder="key">
+        <button id="rfcj_b" onclick="rfcj()">readFromConfigJSON</button>
+        <br>
+        <input id="ufcj_ki" type="text" placeholder="key">
+        <input id="ufcj_vi" type="text" placeholder="value">
+        <button id="ufcj_b" onclick="ufcj()">updatetoConfigJSON</button>
+        <br>
+        <input id="refcj_i" type="text" placeholder="key">
+        <button id="refcj_b" onclick="refcj()">removeFromConfigJSON</button>
+        <br>
+        <input id="gespc_i" type="text" placeholder="key">
+        <button id="gespc_i" onclick="gespc()">get_ESP_core</button>
+        <br>
+        <button onclick="ws_method_builder('restart_device')">restart_device</button>
+        <br>
+        <button onclick="ws_method_builder('firmware_update_from_config')">firmware_update_from_config</button>
+        <br>
+        <input id="fuffs_i" type="text" placeholder="ota_filename">
+        <button id="fuffs_b" onclick="fuffs()">firmware_update_from_fs</button>
+        <br>
+        <button id="df2fs" onclick="ws_method_builder('download_file_to_fs')">download_file_to_fs</button>
+        <br>
+        <button id="lfsfs" onclick="ws_method_builder('list_fs_files_sizes')">list_fs_files_sizes</button>
+        <br>
+        <button id="lfsfsws" onclick="lfsfsws()">list_fs_files_sizes to ws</button>
+        <br>
+        <input id="sgmtgt_ti" type="text" placeholder="topic">
+        <input id="sgmtgt_mi" type="text" placeholder="msg">
+        <button id="sgmtgt_b" onclick="sgmtgt()">send_given_msg_to_given_topic</button>
+        <br>
+        <input id="mthd_mi" type="text" placeholder="mc">
+        <input id="mthd_ai" type="text" placeholder="args">
+        <input id="mthd_pi" type="text" placeholder="plus1arg">
+        <input id="mthd_si" type="text" placeholder="s">
+        <input id="mthd_vi" type="text" placeholder="v">
+        <button id="mthd_b" onclick="mthd()">method_handler</button>
+        <br>
+
+    </div>
+
+
+
+</body>
+
+</html>

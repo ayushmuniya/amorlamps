@@ -1,0 +1,19 @@
+{
+    "comment": "for future use , no requirement as of now",
+    "config_file": "config4.json",
+
+    "turnOffTimeSec": 3600,
+    "fadeDelta": 10,
+    "masterBrigntness": 90,
+    "disableTouchRx": 300,
+    "disableTouchTx": 300,
+    "ledBlinkDelta": 10,
+    "rxLedCount": 3,
+    "txLedCount": 1,
+    "apSSID": "",
+    "apPSK": "",
+    "wSSID": "",
+    "wPSK": "",
+    "dSSID": "amorhotspot",
+    "dPSK": "amorlamps"
+}

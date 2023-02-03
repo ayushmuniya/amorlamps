@@ -1,0 +1,10 @@
+{
+    "config_file": "config2.json",
+    "comment": "not used as of now const values",
+
+    "debounceDuration": "300",
+    "myISR2_flag_counter_cooldown_base": "10",
+    "myISR2_flag_counter_cooldown_millis_duration": "5000"
+
+
+}

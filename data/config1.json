@@ -1,0 +1,6 @@
+{
+    "comment": "TODO: update in each production ESP individually,these will be used on each boot",
+    "config_file": "config1.json",
+
+    "device_id": "amorAAA_E03CEA"
+}
